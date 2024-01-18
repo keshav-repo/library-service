@@ -1,8 +1,8 @@
 'use strict';
 
-function userRoutes(opts, controllers, router){
+function userRoutes(opts, controllers, router, authenticateToken){
 
-    router.get('/api/users', function(req, res){
+    router.get('/api/users', authenticateToken, function(req, res){
         controllers.userController.getUsers(req, res);
     });
     router.post('/api/users', function(req, res){
@@ -10,7 +10,11 @@ function userRoutes(opts, controllers, router){
     });
     router.post('/api/users/login', function(req, res){
         controllers.userController.login(req, res);
+    });
+    router.post('/api/auth/refresh', function(req, res){
+        controllers.userController.refresh(req, res);
     })
+
 }
 
 module.exports = userRoutes;

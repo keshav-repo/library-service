@@ -9,6 +9,8 @@ function userController(opts) {
   var self = this;
   self.db = opts.db;
   self.MAX_STUDENT_BORROW_LIMIT = 3;
+  self.refreshTokenSecret = 'your-refresh-token-secret';
+  self.secretKey = 'your-secret-key';
 }
 
 userController.prototype.getUsers = async function (req, res) {
@@ -61,10 +63,19 @@ userController.prototype.addUser = async function (req, res) {
   }
 }
 
+userController.prototype.generateRefreshToken = function(userId){
+  var self = this;
+  const refreshToken = jwt.sign({ userId }, self.refreshTokenSecret, { expiresIn: '7d' });
+
+  // Save the refresh token in the database
+ // await db.run('INSERT INTO refresh_tokens (user_id, token) VALUES (?, ?)', userId, refreshToken);
+
+  return refreshToken;
+};
+
 userController.prototype.login = async function(req, res){
   const { username, password } = req.body;
   let self = this;
-  const secretKey = 'your-secret-key';
 
   const user = await self.db.get('SELECT * FROM users WHERE username = ?', username);
 
@@ -74,10 +85,13 @@ userController.prototype.login = async function(req, res){
   try{   
     const match = await bcrypt.compare(password, user.password);
     if(match){
-      const token = jwt.sign({ userId: user.id, username: user.username, role: user.role }, secretKey, {
+      const token = jwt.sign({ userId: user.id, username: user.username, role: user.role }, self.secretKey, {
         expiresIn: '1h', // Set the expiration time for the token (e.g., 1 hour)
      });
-     res.json({ token, message: 'Login successful' });
+
+     const refreshToken = await self.generateRefreshToken(user.id);
+
+     res.json({ token, refreshToken, message: 'Login successful' });
     }else{
       return res.status(401).json({ message: 'Invalid username or password' });
     }
@@ -85,6 +99,33 @@ userController.prototype.login = async function(req, res){
     L.error('error creating jwt token', err);
     return res.status(500).json({ message: 'Internal error' });
   }
+}
+
+userController.prototype.refresh = async function(req, res){
+  const refreshToken = req.body.refreshToken;
+  var self = this;
+
+  if (!refreshToken) {
+    return res.status(400).json({ message: 'Bad Request: Missing refresh token' });
+  }
+  try {
+    // Verify the refresh token
+    jwt.verify(refreshToken,  self.refreshTokenSecret, (err, user) => {
+      if (err) {
+        return res.status(403).json({ message: 'Forbidden: Invalid refresh token' });
+      }
+
+      // Generate a new access token
+      const accessToken = jwt.sign({ userId: user.userId, username: user.username, role: user.role }, self.secretKey, {
+        expiresIn: '1h',
+      });
+
+      res.json({ accessToken, message: 'Token refreshed successfully' });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }    
 }
 
 module.exports = userController;
