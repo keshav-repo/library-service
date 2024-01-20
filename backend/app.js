@@ -9,6 +9,9 @@ let express = require('express'),
     q = require('q'),
     jwt = require('jsonwebtoken');
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
 const app = express();
 const port = 3000;
 
@@ -36,6 +39,18 @@ const authenticateToken = (req, res, next) => {
     });
   };
 
+// Swagger JSDoc configuration
+const swaggerOptions = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Your API Documentation',
+        version: '1.0.0',
+      },
+    },
+    apis: ['docs/swagger.js'], // Point to your Swagger JSDoc configuration file
+  };  
+
 q(undefined)
     .then(function(){
         return initialiseDbObj.openConnection();
@@ -49,6 +64,11 @@ q(undefined)
         let routes = new ROUTES(opts, controllers, router, authenticateToken);
 
         app.use('/', router);
+
+        const swaggerSpec = swaggerJSDoc(swaggerOptions);
+  
+        // Serve Swagger UI
+        app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
         app.listen(port, () => {
         console.log(`Server is running on port ${port}`);

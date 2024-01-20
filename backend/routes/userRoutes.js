@@ -13,7 +13,7 @@ function userRoutes(opts, controllers, router, authenticateToken){
     });
     router.post('/api/auth/refresh', function(req, res){
         controllers.userController.refresh(req, res);
-    })
+    });
 
 }
 
