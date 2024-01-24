@@ -9,6 +9,25 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/app.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "DB Debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/db/litedb.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "MYSQL Debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/db/rdb.js"
         }
-    ]
+    ],
+    
 }

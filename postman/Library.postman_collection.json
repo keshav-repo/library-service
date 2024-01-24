@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "a3fa4085-6beb-4d80-b9fc-4f24169521cc",
+		"name": "Library",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30656581"
+	},
+	"item": [
+		{
+			"name": "FETCH ALL BOOKS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/books",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save New book in Library",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Three Thousand Stitches 5\",\n  \"author\": \"Sudha Murthy\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/books",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrow A book",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-role",
+						"value": "LIBRARIAN",
+						"type": "text"
+					},
+					{
+						"key": "x-user-id",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/books/borrow/1",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"borrow",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Return A book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/books/return/1",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"return",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"Ankita Kumari\",\n  \"role\": \"LIBRARIAN\",\n  \"password\": \"abc123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/users",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch All users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/users",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"Asmita Kumari\",\n  \"role\": \"STUDENT\",\n  \"password\": \"abc123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/users",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login using a existing user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"Ankita Kumari\",\n    \"password\": \"abc123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/users/login",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwNTU0MjM2NywiZXhwIjoxNzA2MTQ3MTY3fQ.E1kj3maeO_lMf0lk1Kf3o9y6lR3Csv94xtlb4GuczGo\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LIBRARY_BASE_URL}}/api/auth/refresh",
+					"host": [
+						"{{LIBRARY_BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

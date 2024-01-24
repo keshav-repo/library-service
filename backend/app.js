@@ -7,10 +7,12 @@ let express = require('express'),
     initialiseDb = require('./initialisedb'),
     L = require('lgr'),
     q = require('q'),
-    jwt = require('jsonwebtoken');
+    jwt = require('jsonwebtoken'),
+    REPO = require('./repo');
 
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+const repo = require('./repo');
 
 const app = express();
 const port = 3000;
@@ -53,10 +55,10 @@ const swaggerOptions = {
 
 q(undefined)
     .then(function(){
-        return initialiseDbObj.openConnection();
+        opts.db =new REPO({});
+        return opts.db.initialise();
     })
-    .then(function(db){
-        opts.db = db;
+    .then(function(res){
         L.info('successful db connection');
 
         let router = express.Router();
@@ -77,4 +79,3 @@ q(undefined)
     .catch(function(err){
         L.info('error in db connection', err);
     })
-
