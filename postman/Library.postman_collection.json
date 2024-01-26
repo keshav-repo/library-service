@@ -9,6 +9,16 @@
 		{
 			"name": "FETCH ALL BOOKS",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -19,6 +29,13 @@
 					"path": [
 						"api",
 						"books"
+					],
+					"query": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoiQW5raXRhIiwicm9sZSI6IkxJQlJBUklBTiIsImlhdCI6MTcwNTUwMzYwMiwiZXhwIjoxNzA1NTA3MjAyfQ.zsQSygCiXv5tjvO2C0SkTAGE29UZrk6zwSxRyXI6_DA",
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -27,6 +44,16 @@
 		{
 			"name": "Save New book in Library",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -54,6 +81,16 @@
 		{
 			"name": "Borrow A book",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -89,6 +126,16 @@
 		{
 			"name": "Return A book",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"url": {
@@ -113,7 +160,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"username\": \"Ankita Kumari\",\n  \"role\": \"LIBRARIAN\",\n  \"password\": \"abc123\"\n}",
+					"raw": "{\n  \"username\": \"Ankita\",\n  \"role\": \"LIBRARIAN\",\n  \"password\": \"abc123\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,6 +183,16 @@
 		{
 			"name": "Fetch All users",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -158,7 +215,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"username\": \"Asmita Kumari\",\n  \"role\": \"STUDENT\",\n  \"password\": \"abc123\"\n}",
+					"raw": "{\n  \"username\": \"Keshav123\",\n  \"role\": \"STUDENT\",\n  \"password\": \"abc123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -185,7 +242,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"Ankita Kumari\",\n    \"password\": \"abc123\"\n}",
+					"raw": "{\n  \"username\": \"Ankita\",\n  \"password\": \"abc123\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -209,11 +266,21 @@
 		{
 			"name": "Refresh token",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwNTU0MjM2NywiZXhwIjoxNzA2MTQ3MTY3fQ.E1kj3maeO_lMf0lk1Kf3o9y6lR3Csv94xtlb4GuczGo\"\n}",
+					"raw": "{\n    \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
