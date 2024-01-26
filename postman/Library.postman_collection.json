@@ -154,33 +154,6 @@
 			"response": []
 		},
 		{
-			"name": "Add a user",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"username\": \"Ankita\",\n  \"role\": \"LIBRARIAN\",\n  \"password\": \"abc123\"\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{LIBRARY_BASE_URL}}/api/users",
-					"host": [
-						"{{LIBRARY_BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Fetch All users",
 			"request": {
 				"auth": {
@@ -288,13 +261,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{LIBRARY_BASE_URL}}/api/auth/refresh",
+					"raw": "{{LIBRARY_BASE_URL}}/api/users/refresh",
 					"host": [
 						"{{LIBRARY_BASE_URL}}"
 					],
 					"path": [
 						"api",
-						"auth",
+						"users",
 						"refresh"
 					]
 				}

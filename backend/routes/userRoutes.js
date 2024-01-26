@@ -11,7 +11,7 @@ function userRoutes(opts, controllers, router, authenticateToken){
     router.post('/api/users/login', function(req, res){
         controllers.userController.login(req, res);
     });
-    router.post('/api/auth/refresh', function(req, res){
+    router.post('/api/users/refresh', function(req, res){
         controllers.userController.refresh(req, res);
     });
 
