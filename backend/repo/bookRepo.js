@@ -72,5 +72,24 @@ bookRepo.prototype.findByID = function(bookId){
     return deffered.promise;
 }
 
+bookRepo.prototype.updateAvailability = function (bookId, isAvailable) {
+    var self = this,
+        deffered = q.defer();
+    self.Book.update(
+        { available: isAvailable },
+        {
+            where: {
+                id: bookId,
+            },
+        }
+    )
+    .then(function (updateRes) {
+        deffered.resolve(updateRes);
+    })
+    .catch((error) => {
+        deffered.reject(error);
+    });
+    return deffered.promise;
+}
 
 module.exports = bookRepo;

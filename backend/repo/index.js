@@ -6,7 +6,7 @@ let sqlite3 = require('sqlite3'),
     L = require('lgr'),
     { Sequelize, DataTypes } = require('sequelize'),
     BOOK_REPO = require('./bookRepo'),
-    USER_REPO = require('./bookRepo');
+    USER_REPO = require('./userRepo');
 
 function repo(opts) {
     let self = this;
@@ -21,6 +21,7 @@ function repo(opts) {
     });
 
     self.bookRepo = new BOOK_REPO(opts, self.sequelize);
+    self.userRepo = new USER_REPO(opts, self.sequelize);
 }
 
 repo.prototype.initialise = function(){

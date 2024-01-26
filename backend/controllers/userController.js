@@ -15,9 +15,18 @@ function userController(opts) {
 
 userController.prototype.getUsers = async function (req, res) {
   var self = this;
-  const users = await self.db.all('SELECT * FROM users');
-  res.json(users);
+  const users =   await self.db.userRepo.findAll();
+  res.json(self.formatReponse(users));
 }
+
+
+userController.prototype.formatReponse = function(users){
+  return users.map((user) => {
+    const { id, username} = user;
+    return { id, username };
+  });
+}
+
 
 // exports.addUser = (req, res) => {
 //   const newUser = new User(users.length + 1, req.body.username, req.body.role);
@@ -36,24 +45,30 @@ userController.prototype.addUser = async function (req, res) {
   var self = this;
   const { username, password, role } = req.body;
 
-  // Check if the username is already taken
-  const existingUser = await self.db.get('SELECT * FROM users WHERE username = ?', username);
+  try{
+    // Check if the username is already taken  
+    const existingUser = await self.db.userRepo.findByUsername(username);
 
-  if (existingUser) {
-    return res.status(400).json({ message: 'Username already taken' });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already taken' });
+    }
+  }catch(err){
+    L.error('error checking if existing user', err);
+    return res.status(500).json({
+      'message': 'Internal error'
+    })
   }
+  
 
   try {
     // Hash the password before storing it
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await self.db.run(
-      'INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
-      username,
-      hashedPassword,
-      role
-    );
-    const newUser = new User(result.lastID, username, role);
+    const result = await self.db.userRepo.save({
+      username: username,
+      password: hashedPassword
+    });
+    let newUser = new User(result.lastID, username, role);
     res.status(201).json(newUser);
   } catch (err) {
     L.error(err);
@@ -67,9 +82,6 @@ userController.prototype.generateRefreshToken = function(userId){
   var self = this;
   const refreshToken = jwt.sign({ userId }, self.refreshTokenSecret, { expiresIn: '7d' });
 
-  // Save the refresh token in the database
- // await db.run('INSERT INTO refresh_tokens (user_id, token) VALUES (?, ?)', userId, refreshToken);
-
   return refreshToken;
 };
 
@@ -77,7 +89,7 @@ userController.prototype.login = async function(req, res){
   const { username, password } = req.body;
   let self = this;
 
-  const user = await self.db.get('SELECT * FROM users WHERE username = ?', username);
+  const user = await self.db.userRepo.findByUsername(username);
 
   if (!user) {
     return res.status(401).json({ message: 'Invalid username or password' });
