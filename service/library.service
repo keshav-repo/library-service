@@ -1,0 +1,18 @@
+[Unit]
+Description=Library Application
+After=network.target
+
+[Service]
+ExecStart=/home/keshavteaches/.nvm/versions/node/v16.20.2/bin/node app.js --mysql 
+Restart=always
+User=nobody
+Group=nogroup
+Environment=NODE_ENV=staging
+WorkingDirectory=/home/keshavteaches/library-service/backend
+StandardOutput=file:/var/log/servicefile/library.access.log
+StandardError=file:/var/log/servicefile/library.error.log
+
+[Install]
+WantedBy=multi-user.target
+
+
