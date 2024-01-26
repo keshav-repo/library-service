@@ -8,7 +8,11 @@ let express = require('express'),
     L = require('lgr'),
     q = require('q'),
     jwt = require('jsonwebtoken'),
-    REPO = require('./repo');
+    REPO = require('./repo'),
+    { program } = require('commander');
+
+require('dotenv').config();
+
 
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
@@ -16,6 +20,13 @@ const repo = require('./repo');
 
 const app = express();
 const port = 3000;
+
+program
+  .option('--mysql','IF we are using mysql');
+
+program.parse();
+
+const options = program.opts();
 
 app.use(bodyParser.json());
 
@@ -55,7 +66,8 @@ const swaggerOptions = {
 
 q(undefined)
     .then(function(){
-        opts.db =new REPO({});
+        const isMySql = options.mysql ? true : false;
+        opts.db =new REPO({isMySql});
         return opts.db.initialise();
     })
     .then(function(res){

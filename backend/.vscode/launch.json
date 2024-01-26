@@ -13,6 +13,17 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Backend MYSQL Services",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "args": ["--mysql"],
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/app.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "DB Debug",
             "skipFiles": [
                 "<node_internals>/**"
