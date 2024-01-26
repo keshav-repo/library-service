@@ -9,6 +9,7 @@ function bookController(opts) {
 }
 
 bookController.prototype.getBooks = async function (req, res) {
+  L.info('req received to ferch all books');
   var self = this;
   try {
     const books = await self.db.bookRepo.findAll();
@@ -21,6 +22,7 @@ bookController.prototype.getBooks = async function (req, res) {
 };
 
 bookController.prototype.addBook = async function (req, res) {
+
   var self = this;
 
   if (Array.isArray(req.body)) {
@@ -53,6 +55,7 @@ bookController.prototype.addBook = async function (req, res) {
   }
   else {
     const { title, author } = req.body;
+    L.info('request received to add a book with title:',title ,'author {}:', author);
 
     try {
       var newBook = new Book(title, author, true);
@@ -73,6 +76,7 @@ bookController.prototype.addBook = async function (req, res) {
 
 bookController.prototype.borrowBook = async function (req, res) {
   const bookId = parseInt(req.params.bookId);
+  L.info('request received to borrow book with bookId:', bookId);
 
   var self = this,
       book ;
@@ -101,6 +105,7 @@ bookController.prototype.borrowBook = async function (req, res) {
 
 bookController.prototype.returnBook = async function (req, res) {
   const bookId = parseInt(req.params.bookId);
+  L.info('request received to return book with bookId:', bookId);
 
   var self = this,
       book;
