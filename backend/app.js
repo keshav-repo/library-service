@@ -4,12 +4,14 @@ let express = require('express'),
     bodyParser = require('body-parser'),
     ROUTES = require('./routes'),
     CONTROLLER = require('./controllers'),
+    MIDDLEWARE = require('./middleware'),
     initialiseDb = require('./initialisedb'),
     L = require('lgr'),
     q = require('q'),
     jwt = require('jsonwebtoken'),
     REPO = require('./repo'),
-    { program } = require('commander');
+    { program } = require('commander'),
+    monitor = require('./monitor');
 
 require('dotenv').config();
 
@@ -19,7 +21,7 @@ const swaggerUI = require('swagger-ui-express');
 const repo = require('./repo');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 program
   .option('--mysql','IF we are using mysql');
@@ -31,6 +33,7 @@ const options = program.opts();
 app.use(bodyParser.json());
 
 let opts = {};
+opts.monitor = monitor;
 
 let initialiseDbObj = new initialiseDb();
 
@@ -62,7 +65,7 @@ const swaggerOptions = {
       },
     },
     apis: ['docs/swagger.js'], // Point to your Swagger JSDoc configuration file
-  };  
+  };
 
 q(undefined)
     .then(function(){
@@ -76,6 +79,7 @@ q(undefined)
         let router = express.Router();
         let controllers = new CONTROLLER(opts);
         let routes = new ROUTES(opts, controllers, router, authenticateToken);
+        let middleware = new MIDDLEWARE( app, opts);
 
         app.use('/', router);
 
@@ -85,7 +89,7 @@ q(undefined)
         app.use('/api/swagger', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
         app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
+          console.log(`Server is running on port ${port}`);
         });
     })
     .catch(function(err){

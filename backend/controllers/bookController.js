@@ -6,6 +6,7 @@ function bookController(opts) {
   let self = this;
   self.db = opts.db;
   self.borrowLimit = 3;
+  self.monitor = opts.monitor;
 }
 
 bookController.prototype.getBooks = async function (req, res) {
@@ -14,6 +15,7 @@ bookController.prototype.getBooks = async function (req, res) {
   try {
     const books = await self.db.bookRepo.findAll();
     let formattedRes = self.formatReponse(books);
+    self.monitor.booksFetchedCounter.inc();
     res.json( formattedRes );
   } catch (error) {
     console.error(error);
